@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Website</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      position: relative;
+    }
+
+    header {
+      padding: 20px;
+      background-color: #f9f9f9;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .search-bar {
+      margin-bottom: 20px;
+    }
+
+    .search-bar input {
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    main {
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .menu-card {
+      width: calc(33.33% - 20px);
+      margin-right: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .menu-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .menu-card-content {
+      padding: 16px;
+    }
+
+    .menu-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .menu-card p {
+      margin: 0;
+    }
+
+    .cart {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 280px;
+      background-color: #f9f9f9;
+      padding: 16px;
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    #cartCount {
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      padding: 4px 8px;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    #cartItems {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .cart-item img {
+      width: 60px; 
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .custom-button {
+    color: white;
+    background-color: #d0b200;
+    width: 130px;
+    height: 45px;
+    border-width: 0;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+    .quantity-btns {
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-btns button {
+      margin: 0 4px;
+      padding: 4px 8px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .quantity-btns button:hover {
+      background-color: #e0e0e0;
+    }
+
+    .checkout-button {
+      margin-top: 16px;
+      padding: 8px 16px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .address-form {
+      margin-top: 16px;
+    }
+
+    .address-form input {
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+
+.menu-card-title {
+    color: #323f4b;
+    font-family: "Roboto";
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 24px;
+}
+
+.menu-item-link {
+    color: #d0b200;
+    font-family: "Roboto";
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.menu-item-card {
+    border-radius: 16px;
+}
+
+.address-form {
+  margin-top: 16px;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.address-form input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.address-form button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.address-form button:hover {
+  background-color: #45a049;
+}
+
+
+
+
+.cart {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 280px;
+  max-height: calc(100vh - 40px); /* Adjusted max height to fit within viewport */
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  overflow-y: auto; /* Added to enable scrolling */
+}
+
+.cart {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 350px; /* Increased width */
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+
+
+#cartItems {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  max-height: none; /* Removed max height to allow for scrolling */
+  overflow-y: hidden; /* Hide vertical scrollbar when not needed */
+}
+
+.cart {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 350px; /* Increased width */
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  max-height: calc(100vh - 40px); 
+  overflow-y: auto; 
+}
+
+.address-form {
+  margin-top: 16px;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-height: calc(100% - 64px); 
+  overflow-y: auto; 
+}
+
+
+.search-bar {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-bar input {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: 2px solid #d0b200;
+  border-radius: 30px;
+  width: 300px;
+  max-width: 100%;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #f9ca24;
+  box-shadow: 0 0 10px rgba(209, 209, 209, 0.5);
+}
+
+.search-bar input::placeholder {
+  color: #999;
+}
+
+
+
+  </style>
+</head>
+<body>
+ 
+
+  <header>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for items...">
+    </div>
+  </header>
+  <main id="menuItems">
+    <!-- Menu items will be dynamically added here -->
+  </main>
+
+  
+
+  <div class="cart">
+    <h3>Cart</h3>
+    <span id="cartCount">0</span>
+    <div id="cartItems"></div>
+    <button class="checkout-button" onclick="checkout()">Checkout</button>
+    <div class="address-form" style="display: none;">
+      <input type="text" placeholder="Name" required>
+      <input type="text" placeholder="Address" required>
+      <input type="text" placeholder="Phone Number" required>
+      <input type="email" placeholder="Email" required>
+      <input type="text" placeholder="City" required>
+      <input type="text" placeholder="Zip Code" required>
+      <button onclick="placeOrder()" class="b2">Place Order</button>
+    </div>
+  </div>
+
+  <script>
+    const menuItems = [
+      { id: 1, name: 'Vegetable Pakoras', price: 199, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713776569/Vegetable_Pakoras_dtdq38.jpg' },
+      { id: 2, name: 'Chicken Tikka', price: 299, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713776801/Chicken_Tikka_lkzcaj.jpg' },
+      { id: 3, name: 'Paneer Tikka', price: 249, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713777003/Paneer_Tikka_lbvauw.jpg' },
+      { id: 4, name: 'Samosas', price: 65, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713777210/Samosas_oqe1gl.jpg' },
+      { id: 5, name: 'Butter Chicken', price: 350, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713777394/Butter_Chicken_i8nivj.jpg' },
+      { id: 6, name: 'Palak Paneer', price: 300, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713777556/palak-paneer-3_jifzhg.webp' },
+      { id: 7, name: 'Dal Tadka', price: 240, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713777783/Dal_Tadka_slurio.jpg' },
+      { id: 8, name: 'Chicken Biryani', price: 400, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713780033/Hyderabadi-Chicken-Dum-Biryani-Recipe-2-1_rpfftj.jpg' },
+      { id: 9, name: 'Gulab Jamun', price: 115, image: 'https://res.cloudinary.com/dvc5tetdy/image/upload/v1713777064/gulab_jamun_vgjc6w.png' },
+      { id: 10, name: 'Rasmalai', price: 200, image: 'https://res.cloudinary.com/dvc5tetdy/image/upload/v1713777604/rasmalai_eebw08.webp' },
+      { id: 11, name: 'Kheer', price: 250, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713778651/Kheer_adrw0r.jpg' },
+      { id: 12, name: 'Rasgulla', price: 150, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713778751/Rasgulla_e51zkq.webp' },
+      { id: 13, name: 'Garlic Naan', price: 60, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713778905/Garlic_Naan_e7pqlo.jpg' },
+      { id: 14, name: 'Jalebi', price: 75, image: 'https://res.cloudinary.com/dvc5tetdy/image/upload/v1713777971/jelabi_1_xasmrx.webp' },
+      { id: 15, name: 'Mango Lassi', price: 55, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713779120/Mango_Lassi_w8t4os.jpg' },
+      { id: 16, name: 'Badam Milk', price: 60, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713779242/Badam_Milk_bqmhwf.jpg' },
+      { id: 17, name: 'Lemonade', price: 25, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713779321/Lemonade_tqml16.jpg' },
+      { id: 18, name: 'Veg Biryani', price: 180, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713779634/Veg_Biryani_estsu7.jpg' },
+      { id: 19, name: 'Paneer Butter Masala', price: 160, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713779721/Paneer_Butter_Masala_bdox4c.jpg' },
+      { id: 20, name: 'water bottle', price: 30, image: 'https://res.cloudinary.com/dw3ryikmr/image/upload/v1713779459/water_bottle_t2vbxs.jpg' },
+    ];
+
+    const menuItemsContainer = document.getElementById('menuItems');
+    const searchInput = document.getElementById('searchInput');
+    const cartItems = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const checkoutButton = document.querySelector('.checkout-button');
+    const addressForm = document.querySelector('.address-form');
+
+    let cart = [];
+
+    function renderMenuItems(items) {
+      menuItemsContainer.innerHTML = '';
+      items.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('menu-card');
+        itemElement.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="menu-card-content">
+            <h3>${item.name}</h3>
+            <p>₹ ${item.price}</p>
+            <button class='custom-button'onclick="addToCart(${item.id})">Add to Cart</button>
+          </div>
+        `;
+        menuItemsContainer.appendChild(itemElement);
+      });
+    }
+
+    // Add item to cart
+    function addToCart(itemId) {
+      const item = menuItems.find(item => item.id === itemId);
+      const existingItem = cart.find(cartItem => cartItem.id === itemId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        item.quantity = 1;
+        cart.push(item);
+      }
+      updateCartCount();
+      renderCartItems();
+    }
+
+    // Update cart count
+    function updateCartCount() {
+      const totalQuantity = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = totalQuantity;
+    }
+
+    // // Render cart items
+    // function renderCartItems() {
+    //   cartItems.innerHTML = '';
+    //   cart.forEach(item => {
+    //     const itemElement = document.createElement('div');
+    //     itemElement.classList.add('cart-item');
+    //     itemElement.innerHTML = `
+    //       <img src="${item.image}" alt="${item.name}">
+    //       <span>${item.name} (${item.quantity})</span>
+    //       <div class="quantity-btns">
+    //         <button onclick="updateQuantity(${item.id}, -1)">-</button>
+    //         <button onclick="updateQuantity(${item.id}, 1)">+</button>
+    //         <span>$${item.price * item.quantity}</span>
+    //       </div>
+    //     `;
+    //     cartItems.appendChild(itemElement);
+    //   });
+
+    //   if (cart.length > 0) {
+    //     checkoutButton.style.display = 'block';
+    //   } else {
+    //     checkoutButton.style.display = 'none';
+    //   }
+    // }
+
+    // Render cart items
+function renderCartItems() {
+  cartItems.innerHTML = '';
+  let totalPrice = 0; // Initialize total price
+
+  cart.forEach(item => {
+    const itemTotalPrice = item.price * item.quantity; // Calculate total price for the item
+    totalPrice += itemTotalPrice; // Add item total price to the total price
+
+    const itemElement = document.createElement('div');
+    itemElement.classList.add('cart-item');
+    itemElement.innerHTML = `
+      <img src="${item.image}" alt="${item.name}">
+      <span>${item.name} (${item.quantity})</span>
+      <div class="quantity-btns">
+        <button onclick="updateQuantity(${item.id}, -1)">-</button>
+        <button onclick="updateQuantity(${item.id}, 1)">+</button>
+        <span>₹ ${itemTotalPrice}</span>
+      </div>
+    `;
+    cartItems.appendChild(itemElement);
+  });
+
+  // Display total price
+  const totalPriceElement = document.createElement('div');
+  totalPriceElement.classList.add('total-price');
+  totalPriceElement.innerHTML = `<strong>Total:</strong> ₹ ${totalPrice}`;
+  cartItems.appendChild(totalPriceElement);
+
+  if (cart.length > 0) {
+    checkoutButton.style.display = 'block';
+  } else {
+    checkoutButton.style.display = 'none';
+  }
+}
+
+
+    // Update quantity in cart
+    function updateQuantity(itemId, amount) {
+      const item = cart.find(cartItem => cartItem.id === itemId);
+      if (item) {
+        item.quantity += amount;
+        if (item.quantity <= 0) {
+          cart = cart.filter(cartItem => cartItem.id !== itemId); // Remove item if quantity is zero or less
+        }
+        updateCartCount();
+        renderCartItems();
+      }
+    }
+
+    // Checkout
+    function checkout() {
+      addressForm.style.display = 'block';
+    }
+
+    // Place order
+    function placeOrder() {
+      alert('Your order has been placed successfully!');
+      cart = []; // Clear cart after placing order
+      updateCartCount();
+      renderCartItems();
+      addressForm.style.display = 'none'; // Hide address form after placing order
+    }
+
+    // Search functionality
+    searchInput.addEventListener('input', () => {
+      const searchTerm = searchInput.value.toLowerCase();
+      const filteredItems = menuItems.filter(item =>
+        item.name.toLowerCase().includes(searchTerm)
+      );
+      renderMenuItems(filteredItems);
+    });
+
+    // Initial render
+    renderMenuItems(menuItems);
+  </script>
+</body>
+</html>
